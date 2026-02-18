@@ -1,0 +1,111 @@
+.privacyPage {
+  min-height: 100vh;
+  background: var(--bg-section);
+  padding: 6rem 2rem 4rem;
+}
+
+.privacyContent {
+  max-width: 720px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(6, 78, 59, 0.08);
+  border: 1px solid var(--border-subtle);
+}
+
+.privacyTitle {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.03em;
+  margin: 0 0 0.5rem;
+}
+
+.privacyUpdated {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  margin: 0 0 2.5rem;
+}
+
+.privacySection {
+  margin-bottom: 2rem;
+}
+
+.privacySection h2 {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--emerald-deep);
+  margin: 0 0 0.75rem;
+}
+
+.privacySection p {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin: 0 0 0.75rem;
+}
+
+.privacySection ul {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.privacySection li {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.privacySection a {
+  color: var(--emerald-mint);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.privacySection a:hover {
+  text-decoration: underline;
+}
+
+.privacyBack {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.privacyBackLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--emerald-deep);
+  background: transparent;
+  border: 2px solid var(--emerald-deep);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.privacyBackLink:hover {
+  background: var(--emerald-deep);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .privacyPage {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .privacyContent {
+    padding: 2rem;
+  }
+
+  .privacyTitle {
+    font-size: 1.75rem;
+  }
+}

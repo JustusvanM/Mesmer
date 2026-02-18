@@ -1,0 +1,208 @@
+.contactPage {
+  min-height: 100vh;
+  background: var(--bg-section);
+  padding: 6rem 2rem 4rem;
+}
+
+.contactContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.contactIntro {
+  position: sticky;
+  top: 6rem;
+}
+
+.contactTitle {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  line-height: 1.15;
+}
+
+.contactSubtitle {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--emerald-deep);
+  margin: 0 0 1rem;
+}
+
+.contactDesc {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin: 0 0 1.5rem;
+}
+
+.contactBackLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--emerald-deep);
+  background: transparent;
+  border: 2px solid var(--emerald-deep);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.contactBackLink:hover {
+  background: var(--emerald-deep);
+  color: white;
+}
+
+.contactFormWrap {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 20px rgba(6, 78, 59, 0.08);
+  border: 1px solid var(--border-subtle);
+}
+
+.contactForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contactField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contactField label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.contactField input,
+.contactField select,
+.contactField textarea {
+  width: 100%;
+  padding: 0.75rem 0;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text-heading);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border-subtle);
+  border-radius: 0;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.contactField input::placeholder,
+.contactField textarea::placeholder {
+  color: #94a3b8;
+}
+
+.contactField input:focus,
+.contactField select:focus,
+.contactField textarea:focus {
+  outline: none;
+  border-bottom-color: var(--emerald-mint);
+}
+
+.contactField select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23064E3B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  padding-right: 1.5rem;
+}
+
+.contactField textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contactCheckLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-body);
+  user-select: none;
+}
+
+.contactCheck {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--emerald-deep);
+}
+
+.contactSubmit {
+  align-self: flex-end;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: inherit;
+  background: var(--emerald-deep);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.contactSubmit:hover:not(:disabled) {
+  background: #022c22;
+  transform: translateY(-1px);
+}
+
+.contactSubmit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contactError {
+  font-size: 0.9rem;
+  color: #b91c1c;
+}
+
+.contactSuccess {
+  padding: 2rem 0;
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--emerald-deep);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .contactPage {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .contactContainer {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .contactIntro {
+    position: static;
+  }
+
+  .contactTitle {
+    font-size: 2rem;
+  }
+
+  .contactFormWrap {
+    padding: 1.5rem;
+  }
+}

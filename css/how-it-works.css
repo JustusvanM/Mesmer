@@ -1,0 +1,157 @@
+/* How It Works */
+
+.how-it-works.section {
+  padding: 5rem 0;
+}
+
+.how-it-works {
+  background: var(--bg-section);
+  position: relative;
+}
+
+.how-it-works-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.how-it-works-inner > .how-it-works-intro {
+  align-self: stretch;
+  min-height: 0;
+}
+
+.how-it-works-intro-inner {
+  position: sticky;
+  top: 6rem;
+}
+
+.how-it-works-title {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 800;
+  color: var(--text-heading);
+  margin: 0 0 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.how-it-works-desc {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-body);
+  margin: 0 0 2rem;
+}
+
+.how-it-works-desc strong {
+  color: var(--emerald-deep);
+}
+
+.how-it-works-steps {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.steps-spine-wrap {
+  position: absolute;
+  left: 27px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  pointer-events: none;
+}
+
+.steps-spine-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border-subtle);
+}
+
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.step-item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  transition: opacity 0.3s ease;
+}
+
+.step-item.inactive {
+  opacity: 0.5;
+}
+
+.step-node {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-node-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(6, 78, 59, 0.2);
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step-item.active .step-node-dot {
+  width: 14px;
+  height: 14px;
+  margin: -2px;
+  background: var(--emerald-mint);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+}
+
+.step-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin: 0 0 0.75rem;
+  transition: color 0.2s ease;
+}
+
+.step-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .how-it-works-inner {
+    grid-template-columns: 1fr;
+    padding: 3rem 1.5rem;
+  }
+
+  .how-it-works-intro {
+    align-self: start;
+  }
+
+  .how-it-works-intro-inner {
+    position: static;
+    text-align: center;
+  }
+
+  .how-it-works-desc {
+    text-align: center;
+  }
+
+  .how-it-works-steps {
+    padding-left: 1.5rem;
+  }
+
+  .step-list {
+    gap: 3rem;
+  }
+}

@@ -1,0 +1,23 @@
+/* MESMER — Design Tokens */
+
+:root {
+  /* Brand Colors */
+  --emerald-deep: #064E3B;
+  --emerald-mint: #059669;
+  --emerald-accent: #10B981;
+  --emerald-accent-opacity: rgba(5, 150, 105, 0.15);
+
+  /* Backgrounds */
+  --bg-primary: #FFFFFF;
+  --bg-section: #F0FDF4;
+
+  /* Typography */
+  --text-heading: #022C22;
+  --text-body: #475569;
+
+  /* Effects */
+  --border-subtle: rgba(6, 78, 59, 0.1);
+  --glow-subtle: rgba(6, 78, 59, 0.08);
+  --glow-strong: rgba(6, 78, 59, 0.15);
+  --glow-hover: 0 0 20px rgba(6, 78, 59, 0.15);
+}

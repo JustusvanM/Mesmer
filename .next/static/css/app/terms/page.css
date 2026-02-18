@@ -1,0 +1,115 @@
+/*!**********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./app/terms/terms.module.css ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************/
+.terms_termsPage__ynv2S {
+  min-height: 100vh;
+  background: var(--bg-section);
+  padding: 6rem 2rem 4rem;
+}
+
+.terms_termsContent__d6iUI {
+  max-width: 720px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(6, 78, 59, 0.08);
+  border: 1px solid var(--border-subtle);
+}
+
+.terms_termsTitle__s6tgd {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.03em;
+  margin: 0 0 0.5rem;
+}
+
+.terms_termsUpdated__SO_Dr {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  margin: 0 0 2.5rem;
+}
+
+.terms_termsSection__pDIAB {
+  margin-bottom: 2rem;
+}
+
+.terms_termsSection__pDIAB h2 {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--emerald-deep);
+  margin: 0 0 0.75rem;
+}
+
+.terms_termsSection__pDIAB p {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin: 0 0 0.75rem;
+}
+
+.terms_termsSection__pDIAB ul {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.terms_termsSection__pDIAB li {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.terms_termsSection__pDIAB a {
+  color: var(--emerald-mint);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.terms_termsSection__pDIAB a:hover {
+  text-decoration: underline;
+}
+
+.terms_termsBack__WRaD_ {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.terms_termsBackLink__TVfL_ {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--emerald-deep);
+  background: transparent;
+  border: 2px solid var(--emerald-deep);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.terms_termsBackLink__TVfL_:hover {
+  background: var(--emerald-deep);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .terms_termsPage__ynv2S {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .terms_termsContent__d6iUI {
+    padding: 2rem;
+  }
+
+  .terms_termsTitle__s6tgd {
+    font-size: 1.75rem;
+  }
+}
+

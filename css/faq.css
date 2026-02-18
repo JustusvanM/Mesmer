@@ -1,0 +1,218 @@
+/* FAQ Section & Accordion */
+
+.faq-section {
+  background: #f8faf9;
+}
+
+.faq-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background: var(--bg-primary);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 4px 24px rgba(6, 78, 59, 0.06);
+  border: 1px solid rgba(6, 78, 59, 0.06);
+  text-align: center;
+}
+
+.faq-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-body);
+  margin: 0 0 1.5rem;
+}
+
+.faq-cta {
+  display: inline-flex;
+  margin-bottom: 2rem;
+}
+
+.faq-accordion {
+  text-align: left;
+}
+
+.faq-section .faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: none;
+  margin: 0;
+}
+
+/* Accordion base (shared rule-card structure) */
+.league-rules {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.rule-card {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+}
+
+.rule-card-header {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.25rem;
+  background: white;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(6, 78, 59, 0.08);
+  transition: box-shadow 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+
+.rule-card-header:hover {
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.12);
+}
+
+.rule-card-header h4 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--emerald-deep);
+  line-height: 1.3;
+}
+
+.accordion-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--emerald-deep);
+  transition: transform 0.2s;
+  line-height: 1;
+}
+
+.rule-card.open .accordion-icon {
+  transform: rotate(45deg);
+}
+
+.rule-card.open .rule-card-header {
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.15);
+}
+
+.rule-card-content {
+  width: 100%;
+  max-width: 560px;
+  max-height: 0 !important;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  flex: 0 0 auto;
+  margin-top: 0.5rem;
+}
+
+.rule-card.open .rule-card-content {
+  max-height: 200px !important;
+}
+
+.rule-card-content p {
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  color: var(--text-body);
+  line-height: 1.55;
+  box-shadow: 0 2px 12px rgba(6, 78, 59, 0.08);
+  border: 1px solid rgba(6, 78, 59, 0.08);
+}
+
+/* FAQ-specific accordion styling */
+.faq-section .rule-card.faq-item {
+  width: 100%;
+  max-width: none;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.faq-section .rule-card-header.faq-question {
+  width: 100%;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  background: var(--bg-section);
+  border: 1px solid var(--border-subtle);
+  text-align: left;
+  white-space: normal;
+  box-shadow: none;
+}
+
+.faq-section .rule-card-header.faq-question:hover {
+  background: rgba(6, 78, 59, 0.04);
+  box-shadow: none;
+}
+
+.faq-section .rule-card-header.faq-question span:first-child {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.faq-section .rule-card-header.faq-question h4 {
+  display: none;
+}
+
+.faq-section .accordion-icon.faq-chevron {
+  flex-shrink: 0;
+  color: var(--emerald-deep);
+  transition: transform 0.25s ease;
+}
+
+.faq-section .rule-card.open .accordion-icon.faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-section .rule-card-content.faq-answer {
+  margin-top: 0;
+  max-width: none;
+}
+
+.faq-section .rule-card.open .rule-card-content.faq-answer {
+  max-height: 300px !important;
+}
+
+.faq-section .rule-card-content.faq-answer p {
+  padding: 1rem 1.25rem 1.25rem;
+  background: transparent;
+  border-radius: 0 0 12px 12px;
+  margin: -0.5rem 0 0;
+  padding-top: 0.5rem;
+  border: none;
+  box-shadow: none;
+  font-size: 0.95rem;
+  text-align: left;
+  line-height: 1.55;
+  color: var(--text-body);
+}
+
+.faq-section .rule-card.open .rule-card-header.faq-question {
+  border-radius: 12px 12px 0 0;
+  border-bottom-color: transparent;
+}
+
+@media (max-width: 600px) {
+  .league-rules {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rule-card {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .rule-card-header {
+    width: 100%;
+    justify-content: center;
+  }
+}

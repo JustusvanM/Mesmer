@@ -1,0 +1,155 @@
+/* Final CTA */
+
+.cta-section {
+  position: relative;
+  padding: 6rem 2rem;
+  background: var(--emerald-deep);
+  overflow: hidden;
+}
+
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(52, 211, 153, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta-logos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.cta-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.cta-logo {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.cta-logo-svg,
+.cta-logo-img {
+  width: 24px;
+  height: 24px;
+}
+
+.cta-logo-1 { top: 8%; left: 6%; transform: rotate(5deg); }
+.cta-logo-3 { top: 10%; right: 8%; transform: rotate(-6deg); }
+.cta-logo-4 { top: 22%; right: 12%; transform: rotate(3deg); }
+.cta-logo-5 { top: 42%; left: 5%; transform: rotate(-5deg); }
+.cta-logo-6 { bottom: 35%; left: 10%; transform: rotate(-3deg); }
+.cta-logo-7 { bottom: 15%; right: 8%; transform: rotate(4deg); }
+.cta-logo-8 { bottom: 25%; right: 22%; transform: rotate(-5deg); }
+
+@media (max-width: 768px) {
+  .cta-logos { opacity: 0.4; }
+  .cta-logo { width: 40px; height: 40px; }
+  .cta-logo-svg, .cta-logo-img { width: 20px; height: 20px; }
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.cta-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--emerald-mint);
+  border-radius: 50%;
+  animation: cta-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cta-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.cta-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+.cta-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cta-content .btn-primary {
+  background: white;
+  color: var(--emerald-deep);
+  border-radius: 10px;
+}
+
+.cta-content .btn-primary:hover {
+  background: var(--emerald-mint);
+  color: white;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  font-family: inherit;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.btn-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: white;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.cta-note {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}

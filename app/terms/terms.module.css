@@ -1,0 +1,111 @@
+.termsPage {
+  min-height: 100vh;
+  background: var(--bg-section);
+  padding: 6rem 2rem 4rem;
+}
+
+.termsContent {
+  max-width: 720px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px rgba(6, 78, 59, 0.08);
+  border: 1px solid var(--border-subtle);
+}
+
+.termsTitle {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  letter-spacing: -0.03em;
+  margin: 0 0 0.5rem;
+}
+
+.termsUpdated {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  margin: 0 0 2.5rem;
+}
+
+.termsSection {
+  margin-bottom: 2rem;
+}
+
+.termsSection h2 {
+  font-family: var(--font-plus-jakarta), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--emerald-deep);
+  margin: 0 0 0.75rem;
+}
+
+.termsSection p {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin: 0 0 0.75rem;
+}
+
+.termsSection ul {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+.termsSection li {
+  font-size: 1rem;
+  color: var(--text-body);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.termsSection a {
+  color: var(--emerald-mint);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.termsSection a:hover {
+  text-decoration: underline;
+}
+
+.termsBack {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.termsBackLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--emerald-deep);
+  background: transparent;
+  border: 2px solid var(--emerald-deep);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.termsBackLink:hover {
+  background: var(--emerald-deep);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .termsPage {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .termsContent {
+    padding: 2rem;
+  }
+
+  .termsTitle {
+    font-size: 1.75rem;
+  }
+}
