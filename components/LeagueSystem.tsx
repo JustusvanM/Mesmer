@@ -18,14 +18,25 @@ const TIERS = [
 
 const GAP = 24;
 const STEP_Y = 55;
+const SWIPE_THRESHOLD = 50;
 
 export function LeagueSystem() {
   const [activeIndex, setActiveIndex] = useState(2);
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const touchStartX = useRef<number>(0);
+  const touchEndX = useRef<number>(0);
 
   const tierCount = TIERS.length;
+
+  const goPrev = useCallback(() => {
+    setActiveIndex((i) => (i <= 0 ? i : i - 1));
+  }, []);
+
+  const goNext = useCallback(() => {
+    setActiveIndex((i) => (i >= tierCount - 1 ? i : i + 1));
+  }, [tierCount]);
 
   const updateLayout = useCallback(() => {
     const track = trackRef.current;
@@ -70,6 +81,22 @@ export function LeagueSystem() {
     };
   }, [updateLayout]);
 
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    const dx = touchStartX.current - touchEndX.current;
+    if (Math.abs(dx) < SWIPE_THRESHOLD) return;
+    if (dx > 0) goNext();
+    else goPrev();
+  }, [goNext, goPrev]);
+
   return (
     <section className="section league-system" id="league-system">
       <div className="container">
@@ -78,7 +105,31 @@ export function LeagueSystem() {
           Five tiers. Twenty startups per league. Monthly competitions.
         </p>
         <div className="league-carousel" id="leagueCarousel">
-          <div className="league-carousel-viewport" ref={viewportRef}>
+          <button
+            type="button"
+            className="league-carousel-nav league-carousel-prev"
+            aria-label="Previous tier"
+            onClick={goPrev}
+            disabled={activeIndex <= 0}
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            className="league-carousel-nav league-carousel-next"
+            aria-label="Next tier"
+            onClick={goNext}
+            disabled={activeIndex >= tierCount - 1}
+          >
+            ›
+          </button>
+          <div
+            className="league-carousel-viewport"
+            ref={viewportRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <div className="league-carousel-track" ref={trackRef}>
               {TIERS.map((t, i) => (
                 <div
