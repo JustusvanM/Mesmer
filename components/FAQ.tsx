@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
     a: "No. You don't drop to a lower MRR band. Instead, you move to a league with startups closer to your revenue.",
   },
   {
-    q: "Do I graduate when I reach Tier 5 and finish in the top 3?",
+    q: "Do I graduate when I reach Tier 1 and finish in the top 3?",
     a: "Yes. You graduate from the system. You've joined the elite. The journey from $0 to $100K MRR is complete.",
   },
   {

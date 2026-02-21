@@ -5,7 +5,7 @@ export default function WaitlistPage() {
   return (
     <div className={styles.waitlistPage}>
       <Link href="/" className={styles.waitlistBack}>
-        ← Back to Mesmer
+        Back to Mesmer
       </Link>
 
       <div className={styles.waitlistCard}>

@@ -9,6 +9,14 @@ Production-safe flow: form → Stripe MRR fetch → encrypt key → store in Sup
 3. Backend validates Stripe key, fetches MRR from Stripe, encrypts key, inserts into `startups`
 4. On success → redirect to `/waitlist`
 
+## Stripe key (read-only, revenue pull)
+
+We pull revenue using the user’s **Stripe Restricted API key** so we never need full account access.
+
+- **Format**: Must be a **restricted** key starting with `rk_live_` (live) or `rk_test_` (test). Production form accepts only `rk_live_`.
+- **Permission**: The key must have **Subscriptions: Read**. Create it in Stripe Dashboard → Developers → API keys → **Restricted keys** → add permission “Subscriptions: Read”.
+- **What we do**: We list all active subscriptions (with pagination), sum recurring revenue, and store encrypted key + current MRR. Revenue is **updated** automatically by the daily `sync-mrr` job so MRR stays correct over time.
+
 ## Security
 
 - **Stripe key**: Never logged, never returned, only used server-side

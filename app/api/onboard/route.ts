@@ -38,9 +38,12 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!stripeKey || !stripeKey.startsWith("rk_live_")) {
+    if (!stripeKey || !stripeKey.trim().startsWith("rk_live_")) {
       return NextResponse.json(
-        { error: "Invalid Stripe API key (live key required)" },
+        {
+          error:
+            "Use a Stripe restricted live key (rk_live_...) with Subscriptions: Read. Create under Developers → API keys → Restricted keys.",
+        },
         { status: 400 }
       );
     }

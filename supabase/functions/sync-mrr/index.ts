@@ -182,13 +182,15 @@ Deno.serve(async (req: Request): Promise<Response> => {
           apiVersion: "2026-01-28.clover",
         });
 
-        const response = await stripe.subscriptions.list({
+        const allSubs: Stripe.Subscription[] = [];
+        for await (const sub of stripe.subscriptions.list({
           status: "active",
           expand: ["data.items", "data.items.data.price"],
           limit: 100,
-        });
-
-        mrr = computeMrr(response.data);
+        })) {
+          allSubs.push(sub);
+        }
+        mrr = computeMrr(allSubs);
       } catch (err) {
         result.failed += 1;
         await supabase

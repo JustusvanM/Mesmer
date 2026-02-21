@@ -10,7 +10,7 @@ const TIERS = [
   {
     num: 5,
     range: "$70K – $100K MRR",
-    stats: "20 startups",
+    stats: "20 startups per pod",
     badge: "Final tier",
     graduate: true,
   },
@@ -21,7 +21,7 @@ const STEP_Y = 55;
 const SWIPE_THRESHOLD = 50;
 
 export function LeagueSystem() {
-  const [activeIndex, setActiveIndex] = useState(2);
+  const [activeIndex, setActiveIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -75,9 +75,18 @@ export function LeagueSystem() {
     const handleResize = () => updateLayout();
     window.addEventListener("resize", handleResize);
     window.addEventListener("load", handleResize);
+    // On mobile, layout can run before viewport/media are correct; re-run so Tier 5 (index 0) is centered
+    const t = setTimeout(updateLayout, 100);
+    const t2 = setTimeout(updateLayout, 400);
+    const viewport = viewportRef.current;
+    const ro = viewport ? new ResizeObserver(updateLayout) : null;
+    if (viewport) ro?.observe(viewport);
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("load", handleResize);
+      clearTimeout(t);
+      clearTimeout(t2);
+      if (viewport && ro) ro.unobserve(viewport);
     };
   }, [updateLayout]);
 
