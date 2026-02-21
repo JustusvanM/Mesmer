@@ -15,10 +15,12 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://gomesmer.com"),
   title: "Mesmer: Climb the ranks | Verified MRR league for founders",
   description:
     "Compete in revenue-based leagues. Verified MRR. Monthly seasons. Climb to 100K.",
   icons: [{ url: "/logo-icon.png", type: "image/png" }],
+  alternates: { canonical: "https://gomesmer.com" },
 };
 
 export default function RootLayout({

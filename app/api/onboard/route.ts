@@ -1,9 +1,25 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import { createSupabaseAdmin } from "@/lib/supabase-server";
 import { fetchMrrFromStripe } from "@/lib/stripe";
 import { encrypt } from "@/lib/encryption";
 
 const LOGOS_BUCKET = "logos";
+const FROM_EMAIL =
+  process.env.RESEND_FROM_EMAIL || "Mesmer <onboarding@resend.dev>";
+const WAITLIST_NOTIFY_EMAIL =
+  process.env.WAITLIST_NOTIFY_EMAIL || "justus@gomesmer.com";
+
+function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;",
+  };
+  return text.replace(/[&<>"']/g, (c) => map[c]);
+}
 
 export async function POST(request: Request) {
   try {
@@ -157,6 +173,45 @@ export async function POST(request: Request) {
         { error: "Database insert failed" },
         { status: 500 }
       );
+    }
+
+    // Send emails via Resend (don't fail signup if email fails)
+    const apiKey = process.env.RESEND_API_KEY;
+    if (apiKey) {
+      const resend = new Resend(apiKey);
+      try {
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: [WAITLIST_NOTIFY_EMAIL],
+          subject: `[Waitlist] New signup: ${escapeHtml(name)}`,
+          html: `
+            <h2>New waitlist signup</h2>
+            <p><strong>Company:</strong> ${escapeHtml(name)}</p>
+            <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+            <p><strong>MRR (USD):</strong> $${currentMrr.toLocaleString()}</p>
+            <p><strong>Anonymous:</strong> ${isAnonymous ? "Yes" : "No"}</p>
+            <p>Add this contact to your list.</p>
+          `,
+        });
+      } catch (e) {
+        console.error("Waitlist notify email failed:", e);
+      }
+      try {
+        await resend.emails.send({
+          from: FROM_EMAIL,
+          to: [email],
+          subject: "You're on the Mesmer list",
+          html: `
+            <h2>You're on the list</h2>
+            <p>Hi ${escapeHtml(name)},</p>
+            <p>Thanks for joining Mesmer. We'll get in touch before your league kicks off.</p>
+            <p><strong>Your league will start on the 1st of the month.</strong></p>
+            <p>— The Mesmer team</p>
+          `,
+        });
+      } catch (e) {
+        console.error("Waitlist confirmation email failed:", e);
+      }
     }
 
     return NextResponse.json({ success: true });
