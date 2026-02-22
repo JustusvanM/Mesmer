@@ -1,16 +1,15 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+// Redirect apex (gomesmer.com) to www so one canonical URL: https://www.gomesmer.com
 export function middleware(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
-  const url = request.nextUrl;
 
-  if (host.toLowerCase().startsWith("www.")) {
-    const newHost = host.replace(/^www\./i, "");
-    const canonicalUrl = new URL(request.url);
-    canonicalUrl.host = newHost;
-    canonicalUrl.protocol = "https:";
-    return NextResponse.redirect(canonicalUrl, 301);
+  if (host === "gomesmer.com") {
+    const url = request.nextUrl.clone();
+    url.host = "www.gomesmer.com";
+    url.protocol = "https:";
+    return NextResponse.redirect(url, 301);
   }
 
   return NextResponse.next();
