@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import styles from "./join.module.css";
+
+const JOIN_FORM_STORAGE_KEY = "mesmer-join-form";
 
 const STRIPE_KEY_URL =
   "https://dashboard.stripe.com/apikeys/create?name=TrustMRR&permissions%5B%5D=rak_charge_read&permissions%5B%5D=rak_subscription_read&permissions%5B%5D=rak_plan_read&permissions%5B%5D=rak_bucket_connect_read&permissions%5B%5D=rak_file_read&permissions%5B%5D=rak_product_read";
@@ -22,6 +24,45 @@ export default function JoinPage() {
   const [showStripeHelp, setShowStripeHelp] = useState(false);
 
   const MAX_LOGO_SIZE_MB = 2;
+
+  // Restore form from localStorage on mount (answers persist until user reaches waitlist)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = localStorage.getItem(JOIN_FORM_STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw) as Record<string, unknown>;
+      if (typeof data.name === "string") setName(data.name);
+      if (typeof data.email === "string") setEmail(data.email);
+      if (typeof data.stripeKey === "string") setStripeKey(data.stripeKey);
+      if (typeof data.logoLabel === "string") setLogoLabel(data.logoLabel);
+      if (typeof data.interestedInAccelerator === "boolean") setInterestedInAccelerator(data.interestedInAccelerator);
+      if (typeof data.anonymousMode === "boolean") setAnonymousMode(data.anonymousMode);
+    } catch {
+      // ignore invalid stored data
+    }
+  }, []);
+
+  // Persist form to localStorage when fields change (saved until successful submit → waitlist)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      localStorage.setItem(
+        JOIN_FORM_STORAGE_KEY,
+        JSON.stringify({
+          name,
+          email,
+          stripeKey,
+          logoLabel,
+          interestedInAccelerator,
+          anonymousMode,
+        })
+      );
+    } catch {
+      // ignore quota / private mode
+    }
+  }, [name, email, stripeKey, logoLabel, interestedInAccelerator, anonymousMode]);
+
   const MAX_LOGO_BYTES = MAX_LOGO_SIZE_MB * 1024 * 1024;
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,6 +120,11 @@ export default function JoinPage() {
         return;
       }
 
+      try {
+        localStorage.removeItem(JOIN_FORM_STORAGE_KEY);
+      } catch {
+        // ignore
+      }
       window.location.href = "/waitlist";
     } catch {
       setError("Something went wrong");
@@ -101,16 +147,6 @@ export default function JoinPage() {
               Connect your Stripe to verify your MRR and we&apos;ll place you in the right
               tier. Twenty startups. One month. Promotion or relegation.
             </p>
-
-            <div className={styles.joinAcceleratorBox} aria-label="Join our accelerator">
-              <h3 className={styles.joinAcceleratorTitle}>Join our accelerator:</h3>
-              <ul className={styles.joinAcceleratorList}>
-                <li>Based in Dublin</li>
-                <li>For early-stage founders</li>
-                <li>Programme with mentorship and peers</li>
-                <li>Aligned with your league</li>
-              </ul>
-            </div>
           </div>
 
           <div className={styles.joinFormWrap}>
@@ -229,6 +265,7 @@ export default function JoinPage() {
               <span className={styles.joinAnonymousSwitch} aria-hidden />
               <span className={styles.joinAnonymousContent}>
                 <span className={styles.joinAnonymousText}>Interested in the accelerator</span>
+                <Link href="/contact" className={styles.joinReadMore}>Read more</Link>
               </span>
             </label>
           </div>
