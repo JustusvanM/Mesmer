@@ -16,22 +16,43 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { name, email, stage, message, newsletter } = body;
+    const { reason, name, email, stage, message, newsletter } = body;
 
-    if (!name?.trim() || !email?.trim() || !message?.trim()) {
+    if (!name?.trim() || !email?.trim() || !reason || !message?.trim()) {
       return NextResponse.json(
-        { error: "Name, email, and message are required" },
+        { error: "Reason, name, email, and message are required" },
         { status: 400 }
       );
     }
+
+    const reasonLabel =
+      reason === "accelerator"
+        ? "Dublin accelerator"
+        : reason === "lifetime"
+          ? "Lifetime access"
+          : reason === "question"
+            ? "Question about Mesmer"
+            : "Partnership or other";
+
+    const stageLabels: Record<string, string> = {
+      "pre-revenue": "Pre-revenue",
+      "0-10k": "$0 – $10K MRR",
+      "10k-20k": "$10K – $20K MRR",
+      "20k-40k": "$20K – $40K MRR",
+      "40k-70k": "$40K – $70K MRR",
+      "70k-100k": "$70K – $100K MRR",
+      "100k-plus": "$100K+ MRR",
+    };
+    const stageLabel = stage ? (stageLabels[stage] || stage) : "(not provided)";
 
     const resend = new Resend(apiKey);
 
     const html = `
       <h2>New contact form submission</h2>
+      <p><strong>Reason:</strong> ${escapeHtml(reasonLabel)}</p>
       <p><strong>Name:</strong> ${escapeHtml(name.trim())}</p>
       <p><strong>Email:</strong> ${escapeHtml(email.trim())}</p>
-      <p><strong>Company stage:</strong> ${stage ? escapeHtml(stage) : "(not provided)"}</p>
+      <p><strong>Company stage:</strong> ${escapeHtml(stageLabel)}</p>
       <p><strong>Newsletter signup:</strong> ${newsletter ? "Yes" : "No"}</p>
       <h3>Message</h3>
       <p>${escapeHtml(message.trim()).replace(/\n/g, "<br>")}</p>
@@ -40,7 +61,7 @@ export async function POST(request: Request) {
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: [TO_EMAIL],
-      subject: `Mesmer contact: ${name.trim()}`,
+      subject: `Mesmer ${reason === "accelerator" ? "Accelerator" : reason === "lifetime" ? "Lifetime access" : "Contact"}: ${name.trim()}`,
       html,
     });
 

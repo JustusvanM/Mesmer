@@ -26,7 +26,7 @@ export function Footer() {
                 <Link href="/terms">Terms of service</Link>
               </li>
               <li>
-                <Link href="/contact">Contact us</Link>
+                <Link href="/contact">Contact page</Link>
               </li>
             </ul>
           </nav>

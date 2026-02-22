@@ -15,9 +15,11 @@ export default function JoinPage() {
   const [stripeKey, setStripeKey] = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoLabel, setLogoLabel] = useState("Upload logo");
+  const [interestedInAccelerator, setInterestedInAccelerator] = useState(false);
   const [anonymousMode, setAnonymousMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [showStripeHelp, setShowStripeHelp] = useState(false);
 
   const MAX_LOGO_SIZE_MB = 2;
   const MAX_LOGO_BYTES = MAX_LOGO_SIZE_MB * 1024 * 1024;
@@ -57,6 +59,7 @@ export default function JoinPage() {
       const formData = new FormData();
       formData.append("name", name.trim());
       formData.append("email", email.trim());
+      formData.append("interestedAccelerator", interestedInAccelerator ? "1" : "0");
       formData.append("anonymous", anonymousMode ? "1" : "0");
       formData.append("stripeKey", trimmedKey);
       if (logoFile) {
@@ -87,18 +90,27 @@ export default function JoinPage() {
     <>
       <Nav />
       <main className={styles.joinPage}>
+        <Link href="/" className={styles.joinBackLink}>
+          Back to Mesmer
+        </Link>
         <div className={styles.joinContainer}>
           <div className={styles.joinIntro}>
             <h1 className={styles.joinTitle}>Join your league.</h1>
             <h2 className={styles.joinSubtitle}>Enter your details and climb the ranks.</h2>
             <p className={styles.joinDesc}>
-              Connect your Stripe to verify your MRR, add your company details, and
-              we&apos;ll place you in the right tier. Twenty startups. One month.
-              Promotion or relegation.
+              Connect your Stripe to verify your MRR and we&apos;ll place you in the right
+              tier. Twenty startups. One month. Promotion or relegation.
             </p>
-            <Link href="/" className={styles.joinBackLink}>
-              Back to Mesmer
-            </Link>
+
+            <div className={styles.joinAcceleratorBox} aria-label="Join our accelerator">
+              <h3 className={styles.joinAcceleratorTitle}>Join our accelerator:</h3>
+              <ul className={styles.joinAcceleratorList}>
+                <li>Based in Dublin</li>
+                <li>For early-stage founders</li>
+                <li>Programme with mentorship and peers</li>
+                <li>Aligned with your league</li>
+              </ul>
+            </div>
           </div>
 
           <div className={styles.joinFormWrap}>
@@ -149,67 +161,91 @@ export default function JoinPage() {
               <span className={styles.joinFileLabel}>{logoLabel}</span>
             </div>
           </div>
-          <div className={styles.joinField}>
-            <label htmlFor="stripeKey">MRR in USD (Stripe API Key)*</label>
-            <input
-              type="text"
-              id="stripeKey"
-              name="stripeKey"
-              placeholder="rk_live_..."
-              title="Live key required (no test keys)"
-              value={stripeKey}
-              onChange={(e) => setStripeKey(e.target.value)}
-              required
-              autoComplete="off"
-              disabled={submitting}
-              className={error && error.includes("Stripe") ? styles.invalid : ""}
-            />
-            <div className={styles.joinInstructionBox}>
-              <a
-                href={STRIPE_KEY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.joinInstructionLink}
-              >
-                <strong>Click here to create a read-only API key</strong>
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
+          <div
+            className={styles.joinStripeKeyWrap}
+            onMouseEnter={() => setShowStripeHelp(true)}
+            onMouseLeave={() => setShowStripeHelp(false)}
+          >
+            <div className={styles.joinField}>
+              <label htmlFor="stripeKey">MRR in USD (Stripe API Key)*</label>
+              <input
+                type="text"
+                id="stripeKey"
+                name="stripeKey"
+                placeholder="rk_live_..."
+                title="Live key required (no test keys)"
+                value={stripeKey}
+                onChange={(e) => setStripeKey(e.target.value)}
+                required
+                autoComplete="off"
+                disabled={submitting}
+                className={error && error.includes("Stripe") ? styles.invalid : ""}
+              />
+            </div>
+            {showStripeHelp && (
+              <div className={styles.joinStripeHelpPopover}>
+                <a
+                  href={STRIPE_KEY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.joinInstructionLink}
                 >
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
-              </a>
-              <ol className={styles.joinInstructionList}>
-                <li>Scroll down and click &apos;Create key&apos;</li>
-                <li>Don&apos;t change the permissions</li>
-                <li>Don&apos;t delete the key or we can&apos;t refresh revenue</li>
-              </ol>
-              <p className={styles.joinInstructionNote}>
-                Use Read-only permissions for Subscriptions and Customers to
-                maintain account security.
-              </p>
-            </div>
-            <div className={styles.joinAnonymousWrap}>
-              <label className={styles.joinAnonymousLabel}>
-                <input
-                  type="checkbox"
-                  checked={anonymousMode}
-                  onChange={(e) => setAnonymousMode(e.target.checked)}
-                  disabled={submitting}
-                  className={styles.joinAnonymousCheck}
-                />
-                <span className={styles.joinAnonymousSwitch} aria-hidden />
-                <span className={styles.joinAnonymousContent}>
-                  <span className={styles.joinAnonymousText}>Play anonymously</span>
-                </span>
-              </label>
-            </div>
+                  <strong>Click here to create a read-only API key</strong>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+                <ol className={styles.joinInstructionList}>
+                  <li>Scroll down and click &apos;Create key&apos;</li>
+                  <li>Don&apos;t change the permissions</li>
+                  <li>Don&apos;t delete the key or we can&apos;t refresh revenue</li>
+                </ol>
+                <p className={styles.joinInstructionNote}>
+                  Use Read-only permissions for Subscriptions and Customers to
+                  maintain account security.
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className={styles.joinAcceleratorToggleWrap}>
+            <label className={styles.joinAnonymousLabel}>
+              <input
+                type="checkbox"
+                checked={interestedInAccelerator}
+                onChange={(e) => setInterestedInAccelerator(e.target.checked)}
+                disabled={submitting}
+                className={styles.joinAnonymousCheck}
+              />
+              <span className={styles.joinAnonymousSwitch} aria-hidden />
+              <span className={styles.joinAnonymousContent}>
+                <span className={styles.joinAnonymousText}>Interested in the accelerator</span>
+              </span>
+            </label>
+          </div>
+          <div className={styles.joinAnonymousWrap}>
+            <label className={styles.joinAnonymousLabel}>
+              <input
+                type="checkbox"
+                checked={anonymousMode}
+                onChange={(e) => setAnonymousMode(e.target.checked)}
+                disabled={submitting}
+                className={styles.joinAnonymousCheck}
+              />
+              <span className={styles.joinAnonymousSwitch} aria-hidden />
+              <span className={styles.joinAnonymousContent}>
+                <span className={styles.joinAnonymousText}>Play anonymously</span>
+              </span>
+            </label>
           </div>
 
           {error && <p className={styles.joinError}>{error}</p>}

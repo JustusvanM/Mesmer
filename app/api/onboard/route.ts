@@ -39,6 +39,9 @@ export async function POST(request: Request) {
     const logoFile = formData.get("logo") as File | null;
     const anonymousRaw = formData.get("anonymous");
     const isAnonymous = anonymousRaw === "1" || anonymousRaw === "true";
+    const interestedAcceleratorRaw = formData.get("interestedAccelerator");
+    const interestedInAccelerator =
+      interestedAcceleratorRaw === "1" || interestedAcceleratorRaw === "true";
 
     if (!name || !email) {
       return NextResponse.json(
@@ -155,6 +158,7 @@ export async function POST(request: Request) {
       current_mrr: currentMrr,
       mrr_last_updated_at: now,
       is_anonymous: isAnonymous,
+      interested_in_accelerator: interestedInAccelerator,
     });
 
     if (insertError) {
@@ -190,6 +194,7 @@ export async function POST(request: Request) {
             <p><strong>Email:</strong> ${escapeHtml(email)}</p>
             <p><strong>MRR (USD):</strong> $${currentMrr.toLocaleString()}</p>
             <p><strong>Anonymous:</strong> ${isAnonymous ? "Yes" : "No"}</p>
+            <p><strong>Interested in accelerator:</strong> ${interestedInAccelerator ? "Yes" : "No"}</p>
             <p>Add this contact to your list.</p>
           `,
         });

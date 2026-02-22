@@ -4,6 +4,7 @@
   background: var(--bg-section);
   position: relative;
   overflow-x: hidden;
+  padding-bottom: 0.25rem;
 }
 
 .league-system-footer {
@@ -16,7 +17,7 @@
 }
 
 .league-system .section-subtitle {
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .league-carousel {

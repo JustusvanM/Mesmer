@@ -75,7 +75,7 @@ export function Pricing() {
               href="/contact"
               className="btn btn-secondary pricing-cta"
             >
-              Contact us
+              Get in touch
             </Link>
             <div className="pricing-features">
               <p className="pricing-features-title">

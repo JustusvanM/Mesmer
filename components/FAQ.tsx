@@ -43,7 +43,7 @@ export function FAQ() {
             href="/contact"
             className="btn btn-primary faq-cta"
           >
-            Contact us
+            Get in touch
           </Link>
           <div className="league-rules accordion faq-accordion">
             {FAQ_ITEMS.map((item, i) => (

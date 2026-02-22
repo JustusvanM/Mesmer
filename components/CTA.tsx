@@ -21,10 +21,9 @@ export function CTA() {
       </div>
       <div className="container">
         <div className="cta-content">
-          <span className="cta-badge">
-            <span className="cta-badge-dot" aria-hidden="true"></span>
-            Live on Mesmer
-          </span>
+          <div className="cta-logo-wrap">
+            <img src="/logo-icon.png" alt="Mesmer" className="cta-logo-icon" />
+          </div>
           <h2 className="cta-title">Compete on verified MRR</h2>
           <p className="cta-subtitle">
             Join monthly leagues. Climb the ranks. Reach 100K MRR.
@@ -37,7 +36,7 @@ export function CTA() {
               href="/contact"
               className="btn btn-cta-secondary btn-xl"
             >
-              Contact us
+              Get in touch
             </Link>
           </div>
         </div>

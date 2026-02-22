@@ -68,6 +68,17 @@
   margin: 0 auto;
 }
 
+.cta-logo-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.cta-logo-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
 .cta-badge {
   display: inline-flex;
   align-items: center;

@@ -6,18 +6,27 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import styles from "./contact.module.css";
 
+const REASONS = [
+  { value: "", label: "Select one" },
+  { value: "accelerator", label: "Accelerator" },
+  { value: "lifetime", label: "Lifetime access" },
+  { value: "question", label: "Question" },
+  { value: "other", label: "Other" },
+];
+
 const STAGES = [
-  "Select One",
-  "Pre-revenue",
-  "Tier 1 – $0–$10K MRR",
-  "Tier 2 – $10K–$20K MRR",
-  "Tier 3 – $20K–$40K MRR",
-  "Tier 4 – $40K–$70K MRR",
-  "Tier 5 – $70K–$100K MRR",
-  "Beyond ($100K+ MRR)",
+  { value: "", label: "Select one" },
+  { value: "pre-revenue", label: "Pre-revenue" },
+  { value: "0-10k", label: "$0 – $10K MRR" },
+  { value: "10k-20k", label: "$10K – $20K MRR" },
+  { value: "20k-40k", label: "$20K – $40K MRR" },
+  { value: "40k-70k", label: "$40K – $70K MRR" },
+  { value: "70k-100k", label: "$70K – $100K MRR" },
+  { value: "100k-plus", label: "$100K+ MRR" },
 ];
 
 export default function ContactPage() {
+  const [reason, setReason] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [stage, setStage] = useState("");
@@ -30,7 +39,7 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) {
+    if (!name.trim() || !email.trim() || !reason || !message.trim()) {
       return;
     }
     setSubmitting(true);
@@ -40,6 +49,7 @@ export default function ContactPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          reason,
           name: name.trim(),
           email: email.trim(),
           stage: stage || undefined,
@@ -64,17 +74,30 @@ export default function ContactPage() {
     <>
       <Nav />
       <main className={styles.contactPage}>
+        <Link href="/" className={styles.contactBackLink}>
+          Back to Mesmer
+        </Link>
         <div className={styles.contactContainer}>
           <div className={styles.contactIntro}>
-            <h1 className={styles.contactTitle}>Get in touch.</h1>
-            <h2 className={styles.contactSubtitle}>Questions about Mesmer?</h2>
+            <h1 className={styles.contactTitle}>
+              Get in touch.
+            </h1>
+            <h2 className={styles.contactSubtitle}>
+              Join our accelerator program, get lifetime access or ask your question
+            </h2>
             <p className={styles.contactDesc}>
-              Whether you want lifetime access, have questions about the league
-              system, or want to partner with us, we&apos;re here.
+              Use the form to ask any questions about Mesmer.
             </p>
-            <Link href="/" className={styles.contactBackLink}>
-              Back to Mesmer
-            </Link>
+
+            <div className={styles.contactAcceleratorBox} aria-label="Join our accelerator">
+              <h3 className={styles.contactAcceleratorTitle}>Join our accelerator:</h3>
+              <ul className={styles.contactAcceleratorList}>
+                <li>Based in Dublin</li>
+                <li>For early-stage founders</li>
+                <li>Programme with mentorship and peers</li>
+                <li>Aligned with your league</li>
+              </ul>
+            </div>
           </div>
 
           <div className={styles.contactFormWrap}>
@@ -88,6 +111,22 @@ export default function ContactPage() {
                 onSubmit={handleSubmit}
                 noValidate
               >
+                <div className={styles.contactField}>
+                  <label htmlFor="reason">Reason for reaching out*</label>
+                  <select
+                    id="reason"
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    required
+                    disabled={submitting}
+                  >
+                    {REASONS.map((opt) => (
+                      <option key={opt.value || "empty"} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div className={styles.contactField}>
                   <label htmlFor="name">Name*</label>
                   <input
@@ -113,7 +152,7 @@ export default function ContactPage() {
                   />
                 </div>
                 <div className={styles.contactField}>
-                  <label htmlFor="stage">What stage is your company?</label>
+                  <label htmlFor="stage">Company stage</label>
                   <select
                     id="stage"
                     value={stage}
@@ -121,8 +160,8 @@ export default function ContactPage() {
                     disabled={submitting}
                   >
                     {STAGES.map((opt) => (
-                      <option key={opt} value={opt === "Select One" ? "" : opt}>
-                        {opt}
+                      <option key={opt.value || "empty"} value={opt.value}>
+                        {opt.label}
                       </option>
                     ))}
                   </select>
@@ -131,7 +170,7 @@ export default function ContactPage() {
                   <label htmlFor="message">Message*</label>
                   <textarea
                     id="message"
-                    placeholder="Type your message"
+                    placeholder={reason === "accelerator" ? "Tell us about your startup and why you want to join" : "Type your message"}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
@@ -157,6 +196,7 @@ export default function ContactPage() {
                   className={styles.contactSubmit}
                   disabled={
                     submitting ||
+                    !reason ||
                     !name.trim() ||
                     !email.trim() ||
                     !message.trim()
