@@ -311,6 +311,191 @@
   border-top: 1px solid var(--border-subtle);
 }
 
+/* Admission fee — card verification (no charge until league starts) */
+.joinPaymentWrap {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 12px;
+  background: rgba(6, 78, 59, 0.03);
+}
+
+.joinPaymentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.joinPaymentTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin: 0;
+}
+
+.joinPaymentHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.joinPaymentToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 2px;
+  background: rgba(6, 78, 59, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(6, 78, 59, 0.12);
+}
+
+.joinPaymentToggleBtn {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text-body);
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.joinPaymentToggleBtn:hover {
+  color: var(--emerald-deep);
+}
+
+.joinPaymentToggleBtnActive {
+  background: white;
+  color: var(--emerald-deep);
+  box-shadow: 0 2px 8px rgba(6, 78, 59, 0.12);
+}
+
+.joinPaymentPrice {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.joinPaymentNote {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+.joinPaymentAmount {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--emerald-deep);
+  letter-spacing: -0.02em;
+}
+
+.joinPaymentPeriod {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #595C70;
+  margin-left: 0.05em;
+}
+
+.joinPaymentPlaceholder {
+  font-size: 0.85rem;
+  color: var(--text-body);
+  line-height: 1.5;
+  margin: 0;
+  padding: 1rem;
+  background: rgba(6, 78, 59, 0.06);
+  border-radius: 8px;
+  border: 1px dashed var(--border-subtle);
+}
+
+.joinPaymentElement {
+  min-height: 120px;
+}
+
+.joinPaymentConsentLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  cursor: pointer;
+  user-select: none;
+  margin: 1rem 0 0;
+  position: relative;
+}
+
+.joinPaymentConsentCheck {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.joinPaymentConsentSwitch {
+  flex-shrink: 0;
+  width: 44px;
+  height: 24px;
+  background: var(--border-subtle);
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.joinPaymentConsentSwitch::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.joinPaymentConsentLabel:has(.joinPaymentConsentCheck:checked) .joinPaymentConsentSwitch {
+  background: var(--emerald-deep);
+}
+
+.joinPaymentConsentLabel:has(.joinPaymentConsentCheck:checked) .joinPaymentConsentSwitch::after {
+  transform: translateX(20px);
+}
+
+.joinPaymentConsentText {
+  font-size: 0.85rem;
+  color: var(--text-body);
+  line-height: 1.5;
+}
+
+.joinPaymentConsentLink {
+  color: var(--emerald-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.joinPaymentConsentLink:hover {
+  text-decoration: underline;
+}
+
+.joinPaymentPlaceholder code {
+  font-size: 0.8em;
+  background: rgba(0,0,0,0.06);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+.joinPaymentElement {
+  min-height: 120px;
+}
+
 /* Interested in accelerator toggle */
 .joinAcceleratorToggleWrap {
   margin-top: 1.25rem;

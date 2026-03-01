@@ -15,7 +15,7 @@ const STEPS = [
   },
   {
     title: "Promote, reallocate, or graduate",
-    desc: "top 3 promote. bottom 3 reallocate. Exceed your band? Skip tiers. Reach 100K MRR? You graduate.",
+    desc: "top 3 graduate. bottom 3 reallocate. Exceed your band? Skip tiers. Reach 100K MRR? You graduate.",
   },
 ];
 

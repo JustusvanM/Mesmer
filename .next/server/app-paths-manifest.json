@@ -1,7 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/privacy/page": "app/privacy/page.js",
-  "/contact/page": "app/contact/page.js",
-  "/join/page": "app/join/page.js",
-  "/terms/page": "app/terms/page.js"
-}

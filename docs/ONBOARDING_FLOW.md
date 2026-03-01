@@ -4,10 +4,10 @@ Production-safe flow: form → Stripe MRR fetch → encrypt key → store in Sup
 
 ## Flow Summary
 
-1. User submits form at `/join` (company name, email, logo, Stripe API key)
+1. User submits form at `/join` (company name, email, logo, Stripe API key, and — when configured — card for admission fee verification)
 2. Form POSTs to `/api/onboard` (no Stripe key in URL or logs)
-3. Backend validates Stripe key, fetches MRR from Stripe, encrypts key, inserts into `startups`
-4. On success → redirect to `/waitlist`
+3. Backend validates Stripe key, fetches MRR from Stripe, encrypts key; when Mesmer Stripe is configured, creates Customer and saves payment method; inserts into `startups`
+4. On success → redirect to `/join/confirmed` (you're in; league starts 1st of next month)
 
 ## Stripe key (read-only, revenue pull)
 
@@ -16,6 +16,10 @@ We pull revenue using the user’s **Stripe Restricted API key** so we never nee
 - **Format**: Must be a **restricted** key starting with `rk_live_` (live) or `rk_test_` (test). Production form accepts only `rk_live_`.
 - **Permission**: The key must have **Subscriptions: Read**. Create it in Stripe Dashboard → Developers → API keys → **Restricted keys** → add permission “Subscriptions: Read”.
 - **What we do**: We list all active subscriptions (with pagination), sum recurring revenue, and store encrypted key + current MRR. Revenue is **updated** automatically by the daily `sync-mrr` job so MRR stays correct over time.
+
+## Admission fee (Mesmer Stripe)
+
+When `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY` are set (your Mesmer Stripe account), the join page shows a card verification step (SetupIntent). No charge at signup — we only verify the card; we charge the admission fee when the league starts on the 1st. See `.env.example` for those keys.
 
 ## Security
 

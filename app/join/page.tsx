@@ -1,15 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { JoinFormContent } from "./JoinFormContent";
 import styles from "./join.module.css";
 
 const JOIN_FORM_STORAGE_KEY = "mesmer-join-form";
+const ADMISSION_FEE_MONTHLY = 24; // USD, from pricing
+const ADMISSION_FEE_ANNUAL_PER_MONTH = 19;
 
 const STRIPE_KEY_URL =
   "https://dashboard.stripe.com/apikeys/create?name=TrustMRR&permissions%5B%5D=rak_charge_read&permissions%5B%5D=rak_subscription_read&permissions%5B%5D=rak_plan_read&permissions%5B%5D=rak_bucket_connect_read&permissions%5B%5D=rak_file_read&permissions%5B%5D=rak_product_read";
+
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
 
 export default function JoinPage() {
   const [name, setName] = useState("");
@@ -22,10 +29,19 @@ export default function JoinPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showStripeHelp, setShowStripeHelp] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentSetupError, setPaymentSetupError] = useState<string | null>(null);
+  const [isAnnual, setIsAnnual] = useState(false);
+
+  const paymentRequired = !!stripePublishableKey;
+  const stripePromise = useMemo(
+    () => (stripePublishableKey ? loadStripe(stripePublishableKey) : null),
+    [stripePublishableKey]
+  );
 
   const MAX_LOGO_SIZE_MB = 2;
 
-  // Restore form from localStorage on mount (answers persist until user reaches waitlist)
+  // Restore form from localStorage on mount (answers persist until successful submit). Stripe key is NOT stored.
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -34,7 +50,6 @@ export default function JoinPage() {
       const data = JSON.parse(raw) as Record<string, unknown>;
       if (typeof data.name === "string") setName(data.name);
       if (typeof data.email === "string") setEmail(data.email);
-      if (typeof data.stripeKey === "string") setStripeKey(data.stripeKey);
       if (typeof data.logoLabel === "string") setLogoLabel(data.logoLabel);
       if (typeof data.interestedInAccelerator === "boolean") setInterestedInAccelerator(data.interestedInAccelerator);
       if (typeof data.anonymousMode === "boolean") setAnonymousMode(data.anonymousMode);
@@ -43,7 +58,7 @@ export default function JoinPage() {
     }
   }, []);
 
-  // Persist form to localStorage when fields change (saved until successful submit → waitlist)
+  // Persist form to localStorage when fields change (saved until successful submit). Stripe key is NOT stored.
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -52,7 +67,6 @@ export default function JoinPage() {
         JSON.stringify({
           name,
           email,
-          stripeKey,
           logoLabel,
           interestedInAccelerator,
           anonymousMode,
@@ -61,7 +75,23 @@ export default function JoinPage() {
     } catch {
       // ignore quota / private mode
     }
-  }, [name, email, stripeKey, logoLabel, interestedInAccelerator, anonymousMode]);
+  }, [name, email, logoLabel, interestedInAccelerator, anonymousMode]);
+
+  // Fetch Stripe SetupIntent when payment is required (Mesmer's Stripe for admission)
+  useEffect(() => {
+    if (!stripePublishableKey) return;
+    let cancelled = false;
+    fetch("/api/stripe-setup-intent", { method: "POST" })
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled && data.clientSecret) setClientSecret(data.clientSecret);
+        if (!cancelled && data.error) setPaymentSetupError(data.error);
+      })
+      .catch(() => {
+        if (!cancelled) setPaymentSetupError("Payment setup unavailable");
+      });
+    return () => { cancelled = true; };
+  }, []);
 
   const MAX_LOGO_BYTES = MAX_LOGO_SIZE_MB * 1024 * 1024;
 
@@ -103,6 +133,7 @@ export default function JoinPage() {
       formData.append("interestedAccelerator", interestedInAccelerator ? "1" : "0");
       formData.append("anonymous", anonymousMode ? "1" : "0");
       formData.append("stripeKey", trimmedKey);
+      formData.append("admission_plan", isAnnual ? "annual" : "monthly");
       if (logoFile) {
         formData.append("logo", logoFile);
       }
@@ -125,7 +156,7 @@ export default function JoinPage() {
       } catch {
         // ignore
       }
-      window.location.href = "/waitlist";
+      window.location.href = "/join/confirmed";
     } catch {
       setError("Something went wrong");
       setSubmitting(false);
@@ -144,12 +175,40 @@ export default function JoinPage() {
             <h1 className={styles.joinTitle}>Join your league.</h1>
             <h2 className={styles.joinSubtitle}>Enter your details and climb the ranks.</h2>
             <p className={styles.joinDesc}>
-              Connect your Stripe to verify your MRR and we&apos;ll place you in the right
-              tier. Twenty startups. One month. Promotion or relegation.
+              Verify your card for the admission fee ($24/month; we only verify now — no charge until the league starts). Then add your Stripe API key so we can verify your MRR and keep it updated. We&apos;ll place you in the right tier. Twenty startups. One month. Promotion or relegation.
             </p>
           </div>
 
           <div className={styles.joinFormWrap}>
+            {clientSecret && stripePromise ? (
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <JoinFormContent
+                  name={name}
+                  setName={setName}
+                  email={email}
+                  setEmail={setEmail}
+                  stripeKey={stripeKey}
+                  setStripeKey={setStripeKey}
+                  logoFile={logoFile}
+                  logoLabel={logoLabel}
+                  handleLogoChange={handleLogoChange}
+                  interestedInAccelerator={interestedInAccelerator}
+                  setInterestedInAccelerator={setInterestedInAccelerator}
+                  anonymousMode={anonymousMode}
+                  setAnonymousMode={setAnonymousMode}
+                  error={error}
+                  setError={setError}
+                  submitting={submitting}
+                  setSubmitting={setSubmitting}
+                  showStripeHelp={showStripeHelp}
+                  setShowStripeHelp={setShowStripeHelp}
+                  clientSecret={clientSecret}
+                  paymentRequired={paymentRequired}
+                  stripeKeyUrl={STRIPE_KEY_URL}
+                  styles={styles}
+                />
+              </Elements>
+            ) : (
             <form
           className={styles.joinForm}
           onSubmit={handleSubmit}
@@ -197,6 +256,7 @@ export default function JoinPage() {
               <span className={styles.joinFileLabel}>{logoLabel}</span>
             </div>
           </div>
+
           <div
             className={styles.joinStripeKeyWrap}
             onMouseEnter={() => setShowStripeHelp(true)}
@@ -285,6 +345,45 @@ export default function JoinPage() {
             </label>
           </div>
 
+          <div className={styles.joinPaymentWrap}>
+            <div className={styles.joinPaymentHeader}>
+              <h3 className={styles.joinPaymentTitle}>Admission fee</h3>
+              <div className={styles.joinPaymentHeaderRight}>
+                <span className={styles.joinPaymentPrice}>
+                  <span className={styles.joinPaymentAmount}>${isAnnual ? ADMISSION_FEE_ANNUAL_PER_MONTH : ADMISSION_FEE_MONTHLY}</span><span className={styles.joinPaymentPeriod}>/month</span>
+                </span>
+                <div
+                  className={styles.joinPaymentToggle}
+                  role="group"
+                  aria-label="Billing period"
+                >
+                  <button
+                    type="button"
+                    className={`${styles.joinPaymentToggleBtn} ${!isAnnual ? styles.joinPaymentToggleBtnActive : ""}`}
+                    onClick={() => setIsAnnual(false)}
+                    aria-pressed={!isAnnual}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.joinPaymentToggleBtn} ${isAnnual ? styles.joinPaymentToggleBtnActive : ""}`}
+                    onClick={() => setIsAnnual(true)}
+                    aria-pressed={isAnnual}
+                  >
+                    Annual
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p className={styles.joinPaymentNote}>
+              We save your card to charge the admission fee when your league starts—no charge now.
+            </p>
+            <p className={styles.joinPaymentPlaceholder}>
+              Card verification will appear here once you add your Stripe keys to .env (<code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code> and <code>STRIPE_SECRET_KEY</code>). You can still submit to test the rest of the flow.
+            </p>
+          </div>
+
           {error && <p className={styles.joinError}>{error}</p>}
 
           <button
@@ -301,6 +400,8 @@ export default function JoinPage() {
             {submitting ? "Joining…" : "Join your league"}
           </button>
         </form>
+            )}
+          {paymentSetupError && <p className={styles.joinError}>{paymentSetupError}</p>}
 
         <p className={styles.joinLegal}>
           By joining, you agree to our <Link href="/terms">Terms of Service</Link> and{" "}

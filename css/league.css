@@ -539,9 +539,19 @@
 .arrow-down { color: #B91C1C; }
 
 @media (max-width: 700px) {
+  .section.league-system {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .league-system .section-subtitle {
+    margin-bottom: 1rem;
+  }
+
   .league-carousel {
     max-width: 100%;
     padding: 0 1rem;
+    margin: 0 auto 1.5rem;
   }
 
   .league-carousel-nav {
@@ -552,8 +562,8 @@
 
   .league-carousel-viewport {
     height: 460px;
-    padding: 60px 0;
-    margin: -60px 0;
+    padding: 24px 0;
+    margin: -24px 0;
     touch-action: pan-y;
   }
 

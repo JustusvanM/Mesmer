@@ -171,7 +171,7 @@ export function LeagueSystem() {
                     <div className="tier-stats">{t.stats}</div>
                     <div className="tier-arrows">
                       <span className="arrow-up">
-                        ↑ top 3 promote{t.graduate ? " 🏆" : ""}
+                        ↑ top 3 graduate{t.graduate ? " 🏆" : ""}
                       </span>
                       <span className="arrow-down">↓ bottom 3 reallocate</span>
                     </div>

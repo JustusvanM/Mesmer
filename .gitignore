@@ -2,6 +2,7 @@
 node_modules/
 
 # Build
+.next/
 dist/
 
 # Environment (never commit — contains secrets)
