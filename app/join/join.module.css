@@ -496,11 +496,6 @@
   min-height: 120px;
 }
 
-/* Interested in accelerator toggle */
-.joinAcceleratorToggleWrap {
-  margin-top: 1.25rem;
-}
-
 /* Anonymous toggle */
 .joinAnonymousWrap {
   margin-top: 0.5rem;

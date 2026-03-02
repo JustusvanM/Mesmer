@@ -41,9 +41,6 @@ export async function POST(request: Request) {
     const logoFile = formData.get("logo") as File | null;
     const anonymousRaw = formData.get("anonymous");
     const isAnonymous = anonymousRaw === "1" || anonymousRaw === "true";
-    const interestedAcceleratorRaw = formData.get("interestedAccelerator");
-    const interestedInAccelerator =
-      interestedAcceleratorRaw === "1" || interestedAcceleratorRaw === "true";
     const admissionPlan = (formData.get("admission_plan") as string)?.trim() || "monthly";
 
     if (!name || !email) {
@@ -188,7 +185,6 @@ export async function POST(request: Request) {
       current_mrr: currentMrr,
       mrr_last_updated_at: now,
       is_anonymous: isAnonymous,
-      interested_in_accelerator: interestedInAccelerator,
       stripe_customer_id: stripeCustomerId,
       stripe_payment_method_id: stripePaymentMethodId,
       admission_plan: admissionPlan === "annual" ? "annual" : "monthly",
@@ -227,7 +223,6 @@ export async function POST(request: Request) {
             <p><strong>Email:</strong> ${escapeHtml(email)}</p>
             <p><strong>MRR (USD):</strong> $${currentMrr.toLocaleString()}</p>
             <p><strong>Anonymous:</strong> ${isAnonymous ? "Yes" : "No"}</p>
-            <p><strong>Interested in accelerator:</strong> ${interestedInAccelerator ? "Yes" : "No"}</p>
             <p>You can contact them if there aren&apos;t enough players to begin the league or if tech isn&apos;t ready.</p>
           `,
         });

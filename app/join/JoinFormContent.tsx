@@ -19,8 +19,6 @@ type JoinFormContentProps = {
   logoFile: File | null;
   logoLabel: string;
   handleLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  interestedInAccelerator: boolean;
-  setInterestedInAccelerator: (v: boolean) => void;
   anonymousMode: boolean;
   setAnonymousMode: (v: boolean) => void;
   error: string | null;
@@ -45,8 +43,6 @@ export function JoinFormContent({
   logoFile,
   logoLabel,
   handleLogoChange,
-  interestedInAccelerator,
-  setInterestedInAccelerator,
   anonymousMode,
   setAnonymousMode,
   error,
@@ -70,7 +66,6 @@ export function JoinFormContent({
     const formData = new FormData();
     formData.append("name", name.trim());
     formData.append("email", email.trim());
-    formData.append("interestedAccelerator", interestedInAccelerator ? "1" : "0");
     formData.append("anonymous", anonymousMode ? "1" : "0");
     formData.append("stripeKey", trimmedKey);
     formData.append("admission_plan", isAnnual ? "annual" : "monthly");
@@ -230,22 +225,6 @@ export function JoinFormContent({
         )}
       </div>
 
-      <div className={css.joinAcceleratorToggleWrap}>
-        <label className={css.joinAnonymousLabel}>
-          <input
-            type="checkbox"
-            checked={interestedInAccelerator}
-            onChange={(e) => setInterestedInAccelerator(e.target.checked)}
-            disabled={submitting}
-            className={css.joinAnonymousCheck}
-          />
-          <span className={css.joinAnonymousSwitch} aria-hidden />
-          <span className={css.joinAnonymousContent}>
-            <span className={css.joinAnonymousText}>Interested in the accelerator</span>
-            <Link href="/contact" className={css.joinReadMore}>Read more</Link>
-          </span>
-        </label>
-      </div>
       <div className={css.joinAnonymousWrap}>
         <label className={css.joinAnonymousLabel}>
           <input
@@ -294,7 +273,7 @@ export function JoinFormContent({
           </div>
         </div>
         <p className={css.joinPaymentNote}>
-          We save your card to charge the admission fee when your league starts—no charge now.
+          No charge until your league starts.
         </p>
         <div className={css.joinPaymentElement}>
           <PaymentElement options={{ layout: "tabs", paymentMethodOrder: ["card"] }} />

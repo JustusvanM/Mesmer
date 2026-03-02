@@ -106,7 +106,7 @@ Response includes `charged`, `failed`, `total`, and per-startup `results` (e.g. 
 | `stripe_customer_id`, `stripe_payment_method_id` | Your Stripe (admission: save card, charge later) |
 | `admission_plan` | `'monthly'` or `'annual'` — determines charge amount |
 | `admission_charged_at` | Set after first successful admission charge; null = not yet charged (avoids double-charge) |
-| `is_anonymous`, `interested_in_accelerator` | Join form options |
+| `is_anonymous` | Join form option (play anonymously) |
 | `current_league_id`, `league_band`, etc. | League system (future) |
 
 Run all migrations so these columns exist.

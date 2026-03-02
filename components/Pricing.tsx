@@ -51,7 +51,10 @@ export function Pricing() {
                 Save $60/year
               </span>
             </div>
-            <Link href="/join" className="btn btn-primary pricing-cta">
+            <Link
+              href={annual ? "/join?plan=annual" : "/join?plan=monthly"}
+              className="btn btn-primary pricing-cta"
+            >
               Join your league
             </Link>
             <div className="pricing-features">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
@@ -19,19 +20,21 @@ const STRIPE_KEY_URL =
 const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
 
 export default function JoinPage() {
+  const searchParams = useSearchParams();
+  const initialPlan = searchParams.get("plan");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [stripeKey, setStripeKey] = useState("");
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoLabel, setLogoLabel] = useState("Upload logo");
-  const [interestedInAccelerator, setInterestedInAccelerator] = useState(false);
   const [anonymousMode, setAnonymousMode] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [showStripeHelp, setShowStripeHelp] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentSetupError, setPaymentSetupError] = useState<string | null>(null);
-  const [isAnnual, setIsAnnual] = useState(false);
+  const [isAnnual, setIsAnnual] = useState(initialPlan === "annual");
 
   const paymentRequired = !!stripePublishableKey;
   const stripePromise = useMemo(
@@ -51,7 +54,6 @@ export default function JoinPage() {
       if (typeof data.name === "string") setName(data.name);
       if (typeof data.email === "string") setEmail(data.email);
       if (typeof data.logoLabel === "string") setLogoLabel(data.logoLabel);
-      if (typeof data.interestedInAccelerator === "boolean") setInterestedInAccelerator(data.interestedInAccelerator);
       if (typeof data.anonymousMode === "boolean") setAnonymousMode(data.anonymousMode);
     } catch {
       // ignore invalid stored data
@@ -68,14 +70,13 @@ export default function JoinPage() {
           name,
           email,
           logoLabel,
-          interestedInAccelerator,
           anonymousMode,
         })
       );
     } catch {
       // ignore quota / private mode
     }
-  }, [name, email, logoLabel, interestedInAccelerator, anonymousMode]);
+  }, [name, email, logoLabel, anonymousMode]);
 
   // Fetch Stripe SetupIntent when payment is required (Mesmer's Stripe for admission)
   useEffect(() => {
@@ -130,7 +131,6 @@ export default function JoinPage() {
       const formData = new FormData();
       formData.append("name", name.trim());
       formData.append("email", email.trim());
-      formData.append("interestedAccelerator", interestedInAccelerator ? "1" : "0");
       formData.append("anonymous", anonymousMode ? "1" : "0");
       formData.append("stripeKey", trimmedKey);
       formData.append("admission_plan", isAnnual ? "annual" : "monthly");
@@ -175,7 +175,7 @@ export default function JoinPage() {
             <h1 className={styles.joinTitle}>Join your league.</h1>
             <h2 className={styles.joinSubtitle}>Enter your details and climb the ranks.</h2>
             <p className={styles.joinDesc}>
-              Verify your card for the admission fee ($24/month; we only verify now — no charge until the league starts). Then add your Stripe API key so we can verify your MRR and keep it updated. We&apos;ll place you in the right tier. Twenty startups. One month. Promotion or relegation.
+              Add your Stripe API key so we can verify your MRR and keep it updated. Verify your card for the admission fee, no charge until the league starts. When the league begins we&apos;ll place you in the right tier. Twenty startups. One month. Promotion or relegation.
             </p>
           </div>
 
@@ -192,8 +192,6 @@ export default function JoinPage() {
                   logoFile={logoFile}
                   logoLabel={logoLabel}
                   handleLogoChange={handleLogoChange}
-                  interestedInAccelerator={interestedInAccelerator}
-                  setInterestedInAccelerator={setInterestedInAccelerator}
                   anonymousMode={anonymousMode}
                   setAnonymousMode={setAnonymousMode}
                   error={error}
@@ -313,22 +311,6 @@ export default function JoinPage() {
             )}
           </div>
 
-          <div className={styles.joinAcceleratorToggleWrap}>
-            <label className={styles.joinAnonymousLabel}>
-              <input
-                type="checkbox"
-                checked={interestedInAccelerator}
-                onChange={(e) => setInterestedInAccelerator(e.target.checked)}
-                disabled={submitting}
-                className={styles.joinAnonymousCheck}
-              />
-              <span className={styles.joinAnonymousSwitch} aria-hidden />
-              <span className={styles.joinAnonymousContent}>
-                <span className={styles.joinAnonymousText}>Interested in the accelerator</span>
-                <Link href="/contact" className={styles.joinReadMore}>Read more</Link>
-              </span>
-            </label>
-          </div>
           <div className={styles.joinAnonymousWrap}>
             <label className={styles.joinAnonymousLabel}>
               <input
@@ -377,7 +359,7 @@ export default function JoinPage() {
               </div>
             </div>
             <p className={styles.joinPaymentNote}>
-              We save your card to charge the admission fee when your league starts—no charge now.
+              No charge until your league starts.
             </p>
             <p className={styles.joinPaymentPlaceholder}>
               Card verification will appear here once you add your Stripe keys to .env (<code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code> and <code>STRIPE_SECRET_KEY</code>). You can still submit to test the rest of the flow.
