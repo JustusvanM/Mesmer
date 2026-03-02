@@ -231,8 +231,8 @@
   }
 
   .contactBackLink {
-    top: 4.5rem;
-    left: 1.5rem;
+    position: static;
+    margin-bottom: 1rem;
   }
 
   .contactContainer {

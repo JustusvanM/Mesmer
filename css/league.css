@@ -540,8 +540,8 @@
 
 @media (max-width: 700px) {
   .section.league-system {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
   }
 
   .league-system .section-subtitle {
@@ -561,9 +561,9 @@
   }
 
   .league-carousel-viewport {
-    height: 460px;
-    padding: 24px 0;
-    margin: -24px 0;
+    height: 360px;
+    padding: 8px 0;
+    margin: -8px 0;
     touch-action: pan-y;
   }
 
