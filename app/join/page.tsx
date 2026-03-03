@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js";
@@ -20,9 +19,6 @@ const STRIPE_KEY_URL =
 const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || "";
 
 export default function JoinPage() {
-  const searchParams = useSearchParams();
-  const initialPlan = searchParams.get("plan");
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [stripeKey, setStripeKey] = useState("");
@@ -34,7 +30,7 @@ export default function JoinPage() {
   const [showStripeHelp, setShowStripeHelp] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentSetupError, setPaymentSetupError] = useState<string | null>(null);
-  const [isAnnual, setIsAnnual] = useState(initialPlan === "annual");
+  const [isAnnual, setIsAnnual] = useState(false);
 
   const paymentRequired = !!stripePublishableKey;
   const stripePromise = useMemo(
@@ -43,6 +39,18 @@ export default function JoinPage() {
   );
 
   const MAX_LOGO_SIZE_MB = 2;
+
+  // Read ?plan=annual or ?plan=monthly from the URL on the client to set initial billing toggle.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const plan = params.get("plan");
+      if (plan === "annual") setIsAnnual(true);
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // Restore form from localStorage on mount (answers persist until successful submit). Stripe key is NOT stored.
   useEffect(() => {
