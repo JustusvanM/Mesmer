@@ -206,7 +206,7 @@ export function JoinFormContent({
         {showStripeHelp && (
           <div className={css.joinStripeHelpPopover}>
             <a href={stripeKeyUrl} target="_blank" rel="noopener noreferrer" className={css.joinInstructionLink}>
-              <strong>Click here to create a read-only API key</strong>
+              <strong>How to create your read-only Stripe key</strong>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <polyline points="15 3 21 3 21 9" />
@@ -214,12 +214,14 @@ export function JoinFormContent({
               </svg>
             </a>
             <ol className={css.joinInstructionList}>
-              <li>Scroll down and click &apos;Create key&apos;</li>
-              <li>Don&apos;t change the permissions</li>
-              <li>Don&apos;t delete the key or we can&apos;t refresh revenue</li>
+              <li>In Stripe, go to <strong>Developers → API keys → Restricted keys</strong>.</li>
+              <li>Click <strong>Create restricted key</strong> and name it <strong>Mesmer MRR verification</strong>.</li>
+              <li>Turn on <strong>Read</strong> for <strong>Subscriptions</strong> and <strong>Customers</strong>; leave everything else off.</li>
+              <li>Click <strong>Create key</strong>, then copy the new key (it starts with <code>rk_live_...</code>) and paste it above.</li>
+              <li>Keep this key active so we can keep your MRR up to date.</li>
             </ol>
             <p className={css.joinInstructionNote}>
-              Use Read-only permissions for Subscriptions and Customers to maintain account security.
+              This key is read-only. Mesmer can see your subscriptions and MRR but cannot charge customers or change your Stripe account.
             </p>
           </div>
         )}

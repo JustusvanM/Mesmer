@@ -23,3 +23,4 @@ supabase/functions/.env
 # OS
 .DS_Store
 Thumbs.db
+supabase/.temp
